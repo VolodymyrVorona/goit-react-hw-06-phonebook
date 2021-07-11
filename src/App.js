@@ -7,13 +7,6 @@ import Filter from './Components/Filter';
 import st from './App.module.css';
 
 class App extends Component {
-  // findTheSameName = newName => {
-  //   const { contacts } = this.state;
-  //   const normalizedName = newName.toLowerCase();
-
-  //   return contacts.find(({ name }) => name.toLowerCase() === normalizedName);
-  // };
-
   render() {
     return (
       <div className={st.wrapper}>

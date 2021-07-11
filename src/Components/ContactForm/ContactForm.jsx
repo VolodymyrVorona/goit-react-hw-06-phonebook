@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addContact } from '../../redux/contacts/contacts-actions';
+import actions from '../../redux/contacts/contacts-actions';
 import st from './ContactForm.module.css';
 
 class Form extends Component {
@@ -12,8 +12,20 @@ class Form extends Component {
     this.setState({ [name]: value });
   };
 
+  findTheSameName = newName => {
+    const { contacts } = this.props;
+    const normalizedName = newName.toLowerCase();
+
+    return contacts.find(({ name }) => name.toLowerCase() === normalizedName);
+  };
+
   handleSubmit = e => {
     e.preventDefault();
+    const { name } = this.state;
+
+    if (this.findTheSameName(name)) {
+      return alert(`${name} is already in contacts`);
+    }
 
     this.props.onSubmit(this.state);
 
@@ -60,8 +72,12 @@ class Form extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return { contacts: [...state.contacts.items] };
+};
+
 const mapDispatchToProps = dispatch => ({
-  onSubmit: contact => dispatch(addContact(contact)),
+  onSubmit: contact => dispatch(actions.addContact(contact)),
 });
 
-export default connect(null, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
